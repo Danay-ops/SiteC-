@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f27794eb6cd947d9bfeb2a1ae0e245d2" Name="Diagram1" ZoomLevel="85">
+        <EntityTypeShape EntityType="BookDBModel.Book" Width="1.5" PointX="2.875" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BookDBModel.BookTag" Width="1.5" PointX="7.625" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BookDBModel.Genre" Width="1.5" PointX="5.625" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BookDBModel.Purchase" Width="1.5" PointX="3" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BookDBModel.SubBook" Width="1.5" PointX="6" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BookDBModel.Subscription" Width="1.5" PointX="8" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BookDBModel.Tag" Width="1.5" PointX="9.5" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BookDBModel.User" Width="1.5" PointX="0.875" PointY="3" IsExpanded="true" />
+        <AssociationConnector Association="BookDBModel.FK_Books_ToGenres" ManuallyRouted="false" />
+        <AssociationConnector Association="BookDBModel.FK_BookTags_Books" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="BookDBModel.FK_Purchases_ToBooks" ManuallyRouted="false" />
+        <AssociationConnector Association="BookDBModel.FK_SubBooks_ToBooks" ManuallyRouted="false" />
+        <AssociationConnector Association="BookDBModel.FK_BookTags_Tags" ManuallyRouted="false" />
+        <AssociationConnector Association="BookDBModel.FK_Purchases_ToUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="BookDBModel.FK_SubBooks_ToSubscriptions" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="BookDBModel.Author" Width="1.5" PointX="0.75" PointY="5.75" />
+        <AssociationConnector Association="BookDBModel.FK_Books_ToAuthors" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

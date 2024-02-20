@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BookDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Book">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="AuthorId" Type="Int32" Nullable="false" />
+    <Property Name="GenreId" Type="Int32" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Price" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Genre" Relationship="Self.FK_Books_ToGenres" FromRole="Books" ToRole="Genres" />
+    <NavigationProperty Name="BookTags" Relationship="Self.FK_BookTags_Books" FromRole="Books" ToRole="BookTags" />
+    <NavigationProperty Name="Purchases" Relationship="Self.FK_Purchases_ToBooks" FromRole="Books" ToRole="Purchases" />
+    <NavigationProperty Name="SubBooks" Relationship="Self.FK_SubBooks_ToBooks" FromRole="Books" ToRole="SubBooks" />
+    <NavigationProperty Name="Author" Relationship="BookDBModel.FK_Books_ToAuthors" FromRole="Book" ToRole="Author" />
+  </EntityType>
+  <EntityType Name="BookTag">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BookId" Type="Int32" Nullable="false" />
+    <Property Name="TagId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Book" Relationship="Self.FK_BookTags_Books" FromRole="BookTags" ToRole="Books" />
+    <NavigationProperty Name="Tag" Relationship="Self.FK_BookTags_Tags" FromRole="BookTags" ToRole="Tags" />
+  </EntityType>
+  <EntityType Name="Genre">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Books" Relationship="Self.FK_Books_ToGenres" FromRole="Genres" ToRole="Books" />
+  </EntityType>
+  <EntityType Name="Purchase">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="BookId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Book" Relationship="Self.FK_Purchases_ToBooks" FromRole="Purchases" ToRole="Books" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Purchases_ToUsers" FromRole="Purchases" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="SubBook">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BookId" Type="Int32" Nullable="false" />
+    <Property Name="SubId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Book" Relationship="Self.FK_SubBooks_ToBooks" FromRole="SubBooks" ToRole="Books" />
+    <NavigationProperty Name="Subscription" Relationship="Self.FK_SubBooks_ToSubscriptions" FromRole="SubBooks" ToRole="Subscriptions" />
+  </EntityType>
+  <EntityType Name="Subscription">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Price" Type="Int32" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="SubBooks" Relationship="Self.FK_SubBooks_ToSubscriptions" FromRole="Subscriptions" ToRole="SubBooks" />
+  </EntityType>
+  <EntityType Name="Tag">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="BookTags" Relationship="Self.FK_BookTags_Tags" FromRole="Tags" ToRole="BookTags" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SecondName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Patronymic" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Count" Type="Int32" Nullable="false" />
+    <Property Name="SubscriptionId" Type="Int32" />
+    <NavigationProperty Name="Purchases" Relationship="Self.FK_Purchases_ToUsers" FromRole="Users" ToRole="Purchases" />
+    <Property Name="Password" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="FK_Books_ToGenres">
+    <End Role="Genres" Type="Self.Genre" Multiplicity="1" />
+    <End Role="Books" Type="Self.Book" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Genres">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Books">
+        <PropertyRef Name="GenreId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BookTags_Books">
+    <End Role="Books" Type="Self.Book" Multiplicity="1" />
+    <End Role="BookTags" Type="Self.BookTag" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Books">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="BookTags">
+        <PropertyRef Name="BookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Purchases_ToBooks">
+    <End Role="Books" Type="Self.Book" Multiplicity="1" />
+    <End Role="Purchases" Type="Self.Purchase" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Books">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Purchases">
+        <PropertyRef Name="BookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SubBooks_ToBooks">
+    <End Role="Books" Type="Self.Book" Multiplicity="1" />
+    <End Role="SubBooks" Type="Self.SubBook" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Books">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SubBooks">
+        <PropertyRef Name="BookId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BookTags_Tags">
+    <End Role="Tags" Type="Self.Tag" Multiplicity="1" />
+    <End Role="BookTags" Type="Self.BookTag" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tags">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="BookTags">
+        <PropertyRef Name="TagId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Purchases_ToUsers">
+    <End Role="Users" Type="Self.User" Multiplicity="1" />
+    <End Role="Purchases" Type="Self.Purchase" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Purchases">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SubBooks_ToSubscriptions">
+    <End Role="Subscriptions" Type="Self.Subscription" Multiplicity="1" />
+    <End Role="SubBooks" Type="Self.SubBook" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Subscriptions">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SubBooks">
+        <PropertyRef Name="SubId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="BookDB" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Books" EntityType="Self.Book" />
+    <EntitySet Name="BookTags" EntityType="Self.BookTag" />
+    <EntitySet Name="Genres" EntityType="Self.Genre" />
+    <EntitySet Name="Purchases" EntityType="Self.Purchase" />
+    <EntitySet Name="SubBooks" EntityType="Self.SubBook" />
+    <EntitySet Name="Subscriptions" EntityType="Self.Subscription" />
+    <EntitySet Name="Tags" EntityType="Self.Tag" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK_Books_ToGenres" Association="Self.FK_Books_ToGenres">
+      <End Role="Genres" EntitySet="Genres" />
+      <End Role="Books" EntitySet="Books" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BookTags_Books" Association="Self.FK_BookTags_Books">
+      <End Role="Books" EntitySet="Books" />
+      <End Role="BookTags" EntitySet="BookTags" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Purchases_ToBooks" Association="Self.FK_Purchases_ToBooks">
+      <End Role="Books" EntitySet="Books" />
+      <End Role="Purchases" EntitySet="Purchases" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SubBooks_ToBooks" Association="Self.FK_SubBooks_ToBooks">
+      <End Role="Books" EntitySet="Books" />
+      <End Role="SubBooks" EntitySet="SubBooks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BookTags_Tags" Association="Self.FK_BookTags_Tags">
+      <End Role="Tags" EntitySet="Tags" />
+      <End Role="BookTags" EntitySet="BookTags" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Purchases_ToUsers" Association="Self.FK_Purchases_ToUsers">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Purchases" EntitySet="Purchases" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SubBooks_ToSubscriptions" Association="Self.FK_SubBooks_ToSubscriptions">
+      <End Role="Subscriptions" EntitySet="Subscriptions" />
+      <End Role="SubBooks" EntitySet="SubBooks" />
+    </AssociationSet>
+    <EntitySet Name="Authors" EntityType="BookDBModel.Author" />
+    <AssociationSet Name="FK_Books_ToAuthors" Association="BookDBModel.FK_Books_ToAuthors">
+      <End Role="Author" EntitySet="Authors" />
+      <End Role="Book" EntitySet="Books" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Author">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="SecondName" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Patronymic" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="BornDate" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="Books" Relationship="BookDBModel.FK_Books_ToAuthors" FromRole="Author" ToRole="Book" />
+  </EntityType>
+  <Association Name="FK_Books_ToAuthors">
+    <End Type="BookDBModel.Author" Role="Author" Multiplicity="1" />
+    <End Type="BookDBModel.Book" Role="Book" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Author">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Book">
+        <PropertyRef Name="AuthorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
